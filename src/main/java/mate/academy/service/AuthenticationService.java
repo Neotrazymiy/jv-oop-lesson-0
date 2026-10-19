@@ -1,25 +1,24 @@
 package mate.academy.service;
 
-import java.util.Arrays;
 import mate.academy.model.User;
 
 public class AuthenticationService {
 
-    private static final User[] users = new User[]{new User("bob@i.ua", "1234"),
-            new User("alice@i.ua", "1234")};
+    private final UserService userService = new UserService();
 
     /**
-     * Imagine that some user wants to login to your site. You should check if user credentials
-     * (login and password) are valid or not. All users are stored in <code>UserService</code>
-     * class.
-     *
+     * Imagine that some user wants to login to your site.
+     * You should check if user credentials
+     * (login and password) are valid or not.
+     * All users are stored in <code>UserService</code>class.
      * @param email    - user's email
      * @param password - user's password
      * @return true if user by email exists and passed password is equal to user's password. Return
      * false in any other cases.
      */
     public boolean login(String email, String password) {
-        return Arrays.stream(users).anyMatch(
-                user -> user.getEmail().equals(email) && user.getPassword().equals(password));
+        User user = userService.findByEmail(email);
+
+        return user != null && user.getPassword().equals(password);
     }
 }
